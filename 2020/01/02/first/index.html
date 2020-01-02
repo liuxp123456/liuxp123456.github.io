@@ -6,13 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Hexo</title>
+  <title>svn代码检查规范 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;index.html">
+  <meta name="description" content="因为我安装实在suse系统上安装的svn。 suse安装svn服务端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="svn代码检查规范">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;02&#x2F;first&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="因为我安装实在suse系统上安装的svn。 suse安装svn服务端">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-01-02T08:39:33.727Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -149,97 +152,223 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-first" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      svn代码检查规范
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/01/02/first/" class="archive-article-date">
+
+        
+        <a href="/2020/01/02/first/" class="archive-article-date">
   	<time datetime="2020-01-02T07:59:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-02</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/01/02/first/">svn代码检查规范</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为我安装实在suse系统上安装的svn。</p>
+<p>suse安装svn服务端</p>
+<a id="more"></a>
+<p>一. 安装服务端<br>1，创建文件夹,上传subversion-1.9.9.tar.gz<br>mkdir /home/svn<br>2，创建文件夹dependPackage,上传apr-util-1.6.1.tar.gz、apr-1.6.5.tar.tar.gz、expat-2.1.0.tar.gz 、sqlite-amalgamation-3071501.zip、zlib-1.2.11.tar.gz依赖<br>3，解压文件及依赖文件<br>1)cd /home/svn</p>
+<p>tar -zxvf subversion-1.9.9.tar.gz</p>
+<p>2)cd /home/svn/dependPackage/</p>
+<p>tar -zxvf apr-1.6.5.tar.gz</p>
+<p>tar -zxvf apr-util-1.6.1.tar.gz</p>
+<p>tar -zxvf expat-2.1.0.tar.gz</p>
+<p>unzip sqlite-amalgamation-3071501.zip</p>
+<p>tar -zxvf zlib-1.2.11.tar.gz</p>
+<p>4，按照以下顺序编译依赖文件<br>1)cd zlib-1.2.11/<br>./configure<br>make &amp;&amp; make install</p>
+<p>2)expat被依赖于apr-util<br>cd expat-2.1.0/<br>./configure<br>make &amp;&amp; make install</p>
+<p>3)cd apr-1.6.5/<br>./configure –with-apr=/usr/local/apr<br>make &amp;&amp; make install<br>4)cd apr-util-1.6.1/<br>./configure –with-apr=/usr/local/apr<br>make &amp;&amp; make install</p>
+<p>5)mv sqlite-amalgamation-3071501 ../subversion-1.9.<br>修改sqlite-amalgamation-3071501名字为：sqlite-amalgamation<br>5，安装subversion<br>1)cd /home/svn/subversion-1.9.9/<br>./configure –with-apr=/usr/local/apr –with-apr =/usr/local/apr</p>
+<p>2)cd /home/svn/subversion-1.9.9/<br>./configure –with-apr=/usr/local/apr –with-apr-util=/usr/local/apr</p>
+<p>3)cd /home/svn/subversion-1.9.9/<br>make &amp;&amp; make install</p>
+<p>6，    初始化svn库<br>1）初始化版本管理库</p>
+<h1 id="mkdir-p-home-svn-project"><a href="#mkdir-p-home-svn-project" class="headerlink" title="mkdir -p /home/svn/project"></a>mkdir -p /home/svn/project</h1><p>2）需要将/project目录设定为版本库，命令如下</p>
+<h1 id="svnadmin-create-home-svn-project"><a href="#svnadmin-create-home-svn-project" class="headerlink" title="svnadmin create /home/svn/project"></a>svnadmin create /home/svn/project</h1><p>3)设定/project目录为版本库</p>
+<p>7.svn服务器的相关配置<br>svn的配置主要就是对conf目录下的三个文件配置：svnserve.conf、passwd、authzs<br>•    authz 是权限控制文件<br>•    passwd 是帐号密码文件<br>•    svnserve.conf 是SVN服务配置文件<br>•<br>•    接下来我们依次修改这3个文件。<br>•    修改配置文件 </p>
+<ol>
+<li>修改svnserve.conf文件,取消如下行的注释：</li>
+</ol>
+<p>•     anon-access = read #匿名用户可读<br>•     auth-access = write#授权用户可写<br>•     password-db = passwd#使用哪个文件作为账号文件<br>•     authz-db = authz#使用哪个文件作为权限文件</p>
+<p>•    2. 修改passwd文件，增加需要登录的用户名密码。末尾增加如下行：</p>
+<p>•    username = password</p>
+<p>•    3. 修改authz文件，增加访问控制策略。</p>
+<p>•    [/]                  # / 代表根目录的读写权限<br>•    username = rw<br>•    * = rw               # * 代表所有用户</p>
+<p>8启动svn服务</p>
+<p>输入命令：# svnserve -d -r /home/svn</p>
+<p>注意：/svn目录为版本库的根目录，所以路径仅到/svn即可。<br>此时，SVN服务器的配置以及版本库已经建立完成！</p>
+<p>9.svn客户端访问</p>
+<p>访问地址：svn://[服务器IP地址]/[项目名称];<br>例如：svn://192.168.32.42/project/<br>输入已授权的用户信息登录即可访问资源位置。<br>同样的，可以通过右击项目[team]—[share]，输入以上URL将项目共享至新建的SVN版本库中。<br>注意：上述地址中没有”/svn”这一级目录，”/svn”为版本库根目录，不用输入!!!!!!!!</p>
+<p>10新建多个版本库<br>若要在/svn目录下添加新的版本库，直接新建相应的目录，然后设置为版本库，最后配置即可，不需要重新运行svnserve -d -r /home/svn，也不需要把该命令应用到/svn目录下你所新建的目录，如果因为误操作执行了以上命令，会导致资源库不可用，再次运行svnserve -d -r /home/svn也会报：“不能绑定服务器套接字 地址已在使用”的错误字样“（若已至此，删除掉新建的资源库，并用ps -ef | grep svnserve查看进程，kill -9 [进程号] 杀掉，重新执行svnserve -d -r /home/svn，再次新建资源库，直接配置即可使用）<br>比如在/svn目录下另外新建一个project2的资源库，命令如下：</p>
+<h1 id="mkdir-p-home-svn-project2"><a href="#mkdir-p-home-svn-project2" class="headerlink" title="mkdir -p /home/svn/project2"></a>mkdir -p /home/svn/project2</h1><h1 id="svnadmin-create-home-svn-project2"><a href="#svnadmin-create-home-svn-project2" class="headerlink" title="svnadmin create /home/svn/project2"></a>svnadmin create /home/svn/project2</h1><h1 id="在次配置当前版本库的三个配置文件：svnserve-conf、passwd、authzs。"><a href="#在次配置当前版本库的三个配置文件：svnserve-conf、passwd、authzs。" class="headerlink" title="在次配置当前版本库的三个配置文件：svnserve.conf、passwd、authzs。"></a>在次配置当前版本库的三个配置文件：svnserve.conf、passwd、authzs。</h1><p>（不需再运行svnserve -d -r /home/svn !!!!!!!）<br>在svn上配置checkstyle做代码风格检查<br>采用：SVN PreCommitChecks + CheckStyle + svnchecker方案<br>1.前期准备：插件下载<br>(1)CheckStyle下载<br>下载地址：<a href="https://download.csdn.net/download/mactty/4392509" target="_blank" rel="noopener">https://download.csdn.net/download/mactty/4392509</a></p>
+<p>(2)svnchecker下载<br>下载地址：<a href="https://sourceforge.net/projects/svnchecker/files/svnchecker/0.3/" target="_blank" rel="noopener">https://sourceforge.net/projects/svnchecker/files/svnchecker/0.3/</a> </p>
+<p>(3)上传至Linux服务器并解压</p>
+<p>3.在svn代码库的hooks目录下创建/修改配置文件<br>(1)pre-commit修改<br>1）进入svn版本库的hooks目录<br>cd /data/svn/davesvn/hooks<br>2）将pre-commit.tmpl重命名为pre-commit<br>mv pre-commit.tmpl pre-commit<br>3）配置如下：</p>
+<p>REPOS=”$1”<br>TXN=”$2”</p>
+<h1 id="Make-sure-that-the-log-message-contains-some-text"><a href="#Make-sure-that-the-log-message-contains-some-text" class="headerlink" title="Make sure that the log message contains some text."></a>Make sure that the log message contains some text.</h1><p>SVNLOOK=/usr/local/bin/svnlook<br>$SVNLOOK log -t “$TXN” “$REPOS” | <br>   grep “[a-zA-Z0-9]” &gt; /dev/null || exit 1<br>#Exit on all errors<br>set -e</p>
+<h1 id="Check-that-the-author-of-this-commit-has-the-rights-to-perform"><a href="#Check-that-the-author-of-this-commit-has-the-rights-to-perform" class="headerlink" title="Check that the author of this commit has the rights to perform"></a>Check that the author of this commit has the rights to perform</h1><h1 id="the-commit-on-the-files-and-directories-being-modified"><a href="#the-commit-on-the-files-and-directories-being-modified" class="headerlink" title="the commit on the files and directories being modified."></a>the commit on the files and directories being modified.</h1><p>#commit-access-control.pl “$REPOS” “$TXN” commit-access-control.cfg || exit 1<br>/home/svn/svnchecker-0.3/Main.py PreCommit “$REPOS” “$TXN” || exit 1</p>
+<h1 id="All-checks-passed-so-allow-the-commit"><a href="#All-checks-passed-so-allow-the-commit" class="headerlink" title="All checks passed, so allow the commit."></a>All checks passed, so allow the commit.</h1><p>exit 0</p>
+<p>（说明：/data/svntools/svnchecker-0.3为svnchecker插件目录）</p>
+<p>(2)新增idea_checks.xml文件(此文件为checkstyle代码检测规则文件，可自定义)<br>touch idea_checks.xml<br> 文件内容如下：</p>
+ <?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
-        <div class="article-info info-on-right">
-          
-          
+<module name="Checker">
+    <module name="TreeWalker">
 
+<pre><code>    &lt;module name=&quot;PackageName&quot;&gt;
+        &lt;property name=&quot;format&quot; value=&quot;^[a-z]+(\.[a-z][a-z0-9]*)*$&quot; /&gt;
+        &lt;message key=&quot;name.invalidPattern&quot; value=&quot;包名 &apos;&apos;{0}&apos;&apos; 要符合 &apos;&apos;{1}&apos;&apos;格式.&quot;/&gt;
+    &lt;/module&gt;
+
+     &lt;!-- 注释检查 --&gt;
+    &lt;!-- 检查方法和构造函数的javadoc --&gt;
+    &lt;module name=&quot;JavadocType&quot;&gt;
+        &lt;property name=&quot;allowUnknownTags&quot; value=&quot;true&quot;/&gt;
+        &lt;message key=&quot;javadoc.missing&quot; value=&quot;类注释：缺少Javadoc注释。&quot;/&gt;
+    &lt;/module&gt;
+    &lt;module name=&quot;JavadocMethod&quot;&gt;
+        &lt;property name=&quot;tokens&quot; value=&quot;METHOD_DEF&quot; /&gt;
+        &lt;!--允许get set 方法没有注释--&gt;
+        &lt;property name=&quot;allowMissingPropertyJavadoc&quot; value=&quot;true&quot;/&gt;
+        &lt;message key=&quot;javadoc.missing&quot; value=&quot;方法注释：缺少Javadoc注释。&quot;/&gt;
+    &lt;/module&gt;
+
+    &lt;module name=&quot;ParameterNumber&quot;&gt;
+        &lt;property name=&quot;max&quot; value=&quot;5&quot; /&gt;
+    &lt;/module&gt;
+
+&lt;/module&gt;</code></pre></module>
+
+
+
+<p>(3)新增svncheckerconfig.ini文件<br>touch svncheckerconfig.ini<br>文件内容如下：</p>
+<p>[Default]</p>
+<p>#This property tells Subversionchecker about all checks<br>#(UnitTests, AccessRights, XMLValidator etc) it should execute.<br>#Separated with comma (“,”)<br>Main.PreCommitChecks=Checkstyle<br>#Path of java executable to run Checkstyle command<br>Checkstyle.Java=/usr/bin/java</p>
+<p>#Classpath for executing Checkstyle rules<br>Checkstyle.Classpath=/data/svntools/checkstyle-5.3/checkstyle-5.3-all.jar</p>
+<p>#Configuration file for Checkstyle to run its rules.<br>Checkstyle.ConfigFile=/data/svntools/checkstyle-5.3/idea_checks.xml<br>#In case of failures, where should Subversionchecker redirect the errors<br>Checkstyle.FailureHandlers=Console</p>
+<p>说明：<br>　　Main.PreCommitChecks:检查器为Checkstyle<br>　　Checkstyle.Java:Checkstyle执行的java命令路径为/usr/bin/java<br>　　Checkstyle.Classpath:要加载/data/svntools/checkstyle-5.3/checkstyle-5.3-all.jar<br>　　Checkstyle.ConfigFile:检查规则文件路径为/data/svntools/checkstyle-5.3/idea_checks.xml<br>　　Checkstyle.FailureHandlers:失败时将把信息输出到标准输出</p>
+<p>4.校验　<br>当有代码提交时，此检查框架将运行，保证违反规则的代码被拒绝。程序员的将看到具体报错信息</p>
+<p>5.提交非java代码报错问题：设置只对java代码进行校验<br>说明：在Checkstyle.py文件中command = “%s -classpath %s com.puppycrawl.tools.checkstyle.Main -c %s “ % (java, classpath, config)这个命令执行时需要在后面加上待检查文件，但是非java文件在    transaction.getFiles(check, ignore)方法中得到的为空，但是后续并没有做验证就直接执行Process.execute(command + “ “.join(files))命令，故报错。<br>方法：在command = “%s -classpath %s com.puppycrawl.tools.checkstyle.Main -c %s “ % (java, classpath, config)语句之后加上    if cmp(“ “.join(files),””) == 0:        return (“”, 0)即可；</p>
+<p>检查规则模板说明网址：<a href="https://blog.51cto.com/4837471/2164140:CheckStyle" target="_blank" rel="noopener">https://blog.51cto.com/4837471/2164140:CheckStyle</a><br>官网检查规则模板说明网址：<a href="https://checkstyle.sourceforge.io/:CheckStyle" target="_blank" rel="noopener">https://checkstyle.sourceforge.io/:CheckStyle</a><br>检查规则模板说明网址：<a href="https://blog.51cto.com/4837471/2164140" target="_blank" rel="noopener">https://blog.51cto.com/4837471/2164140</a>        </p>
+<p>注意:做checkstyle规则时，一定要注意格式。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" target="_blank" rel="noopener" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" target="_blank" rel="noopener" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" target="_blank" rel="noopener" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;" target="_blank" rel="noopener"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/01/02/first/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/11/25/my-second-blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">搭建免费个人博客详细教程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" target="_blank" rel="noopener" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/11/25/my-second-blog/" class="archive-article-date">
-  	<time datetime="2019-11-25T07:52:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-25</time>
-</a>
-        </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/11/25/my-second-blog/">搭建免费个人博客详细教程</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" target="_blank" rel="noopener" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -262,8 +391,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
